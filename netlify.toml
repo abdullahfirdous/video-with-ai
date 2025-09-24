@@ -10,3 +10,14 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Prevent redirect loops
+[[redirects]]
+  from = "/_next/*"
+  to = "/_next/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
