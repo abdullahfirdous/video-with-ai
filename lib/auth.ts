@@ -47,11 +47,11 @@ export const authOptions: NextAuthOptions = {
           console.log("Authentication successful for user:", user.email);
           
           return { 
-            id: user._id.toString(),
-            email: user.email,
-            displayName: user.displayName,
-            profileImage: user.profileImage
-          }
+  id: user._id.toString(),
+  email: user.email,
+  displayName: user.displayName || user.email,
+  profileImage: user.profileImage || null
+}
 
         } catch (error) {
           console.error("Auth error:", error);
@@ -63,13 +63,21 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({token, user}){
-      if(user){
-        token.id = user.id;
-        token.displayName = (user as any).displayName;
-        token.profileImage = (user as any).profileImage;
-      }
-      return token;
-    },
+  if(user){
+    // Only store essential data
+    token.id = user.id;
+    token.displayName = (user as any).displayName || "";
+    token.profileImage = (user as any).profileImage || "";
+  }
+  // Explicitly return only what we need
+  return {
+    ...token,
+    id: token.id,
+    email: token.email,
+    displayName: token.displayName,
+    profileImage: token.profileImage
+  };
+},
 
     async session({session, token }){
       if (session.user){
@@ -115,9 +123,15 @@ export const authOptions: NextAuthOptions = {
   },
 
   session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
+  strategy: "jwt",
+  maxAge: 30 * 24 * 60 * 60, // 30 days
+  // Add this line
+  updateAge: 24 * 60 * 60, // 24 hours
+},
+
+jwt: {
+  maxAge: 30 * 24 * 60 * 60, // 30 days
+},
 
   debug: process.env.NODE_ENV === "development",
   
