@@ -1,4 +1,3 @@
-// lib/auth.ts
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials"
 import { connectToDatabase } from "./db";
@@ -39,8 +38,6 @@ export const authOptions: NextAuthOptions = {
           const isValid = await bcrypt.compare(credentials.password, user.password);
 
           console.log("Password comparison result:", isValid);
-          console.log("Input password:", credentials.password);
-          console.log("Stored hash:", user.password);
 
           if (!isValid) {
             console.log("Invalid password for user:", credentials.email);
@@ -50,11 +47,11 @@ export const authOptions: NextAuthOptions = {
           console.log("Authentication successful for user:", user.email);
           
           return { 
-  id: user._id.toString(),
-  email: user.email,
-  displayName: user.displayName,
-  profileImage: user.profileImage
-}
+            id: user._id.toString(),
+            email: user.email,
+            displayName: user.displayName,
+            profileImage: user.profileImage
+          }
 
         } catch (error) {
           console.error("Auth error:", error);
@@ -66,22 +63,22 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({token, user}){
-  if(user){
-    token.id = user.id;
-    token.displayName = (user as any).displayName;
-    token.profileImage = (user as any).profileImage;
-  }
-  return token;
-},
+      if(user){
+        token.id = user.id;
+        token.displayName = (user as any).displayName;
+        token.profileImage = (user as any).profileImage;
+      }
+      return token;
+    },
 
     async session({session, token }){
-  if (session.user){
-    session.user.id = token.id as string;
-    (session.user as any).displayName = token.displayName as string;
-    (session.user as any).profileImage = token.profileImage as string;
-  }
-  return session;
-},
+      if (session.user){
+        session.user.id = token.id as string;
+        (session.user as any).displayName = token.displayName as string;
+        (session.user as any).profileImage = token.profileImage as string;
+      }
+      return session;
+    },
 
     async redirect({ url, baseUrl }) {
       // Redirect to login page after logout
@@ -91,7 +88,7 @@ export const authOptions: NextAuthOptions = {
 
       // Redirect to dashboard or home after successful login
       if (url.startsWith("/api/auth/signin") || url === `${baseUrl}/login`) {
-        return `${baseUrl}/dashboard` || baseUrl; // Change to your desired redirect
+        return `${baseUrl}/dashboard` || baseUrl;
       }
 
       // Allow relative callback URLs
@@ -122,7 +119,9 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
 
-  debug: process.env.NODE_ENV === "development", // Enable debug logs in development
-
-  secret: process.env.NEXTAUTH_SECRET!,
+  debug: process.env.NODE_ENV === "development",
+  
+  secret: process.env.NEXTAUTH_SECRET,
+  
+ useSecureCookies: process.env.NODE_ENV === "production",
 };

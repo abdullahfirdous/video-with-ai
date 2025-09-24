@@ -3,7 +3,7 @@
   publish = ".next"
 
 [build.environment]
-  NODE_VERSION = "18"
+  NODE_VERSION = "20"
   SKIP_LINT = "true"
   DISABLE_ESLINT_PLUGIN = "true"
   ESLINT_NO_DEV_ERRORS = "true"
@@ -11,13 +11,20 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Prevent redirect loops
-[[redirects]]
-  from = "/_next/*"
-  to = "/_next/:splat"
-  status = 200
-
+# Handle Next.js App Router API routes
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  to = "/.netlify/functions/___netlify-handler"
+  status = 200
+
+# Handle static files
+[[redirects]]
+  from = "/_next/static/*"
+  to = "/static/:splat"
+  status = 200
+
+# Fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
