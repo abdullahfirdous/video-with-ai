@@ -5,7 +5,6 @@ export interface IUser {
   email: string;
   password: string;
   displayName?: string;
-  profileImage?: string;
   resetPasswordToken?: string;
   resetPasswordExpiry?: Date;
   _id?: mongoose.Types.ObjectId;
@@ -22,7 +21,6 @@ const userSchema = new Schema<IUser>(
     },
     password: { type: String, required: true },
     displayName: { type: String, default: "" },
-    profileImage: { type: String, default: "" },
     resetPasswordToken: {
       type: String,
       required: false,

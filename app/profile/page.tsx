@@ -47,6 +47,8 @@ export default function ProfilePage() {
     return null;
   }
 
+  // COMMENTED OUT: Image upload functionality
+  /*
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
   const file = event.target.files?.[0];
   if (!file) return;
@@ -112,7 +114,10 @@ export default function ProfilePage() {
     setIsUpdating(false);
   }
 };
+  */
 
+  // COMMENTED OUT: Save profile functionality
+  /*
   const handleSave = async () => {
   console.log('=== HANDLE SAVE DEBUG START ===');
   console.log('Display name to save:', displayName);
@@ -154,6 +159,7 @@ export default function ProfilePage() {
     setIsUpdating(false);
   }
 };
+  */
 
   const handleCancel = () => {
     const user = session.user as any;
@@ -220,6 +226,8 @@ export default function ProfilePage() {
                 {/* Profile Picture */}
                 <div className="relative mx-auto mb-4">
                   <div className="w-24 h-24 rounded-full overflow-hidden mx-auto">
+                    {/* COMMENTED OUT: Dynamic profile image display */}
+                    {/*
                     {profileImage && !profileImage.includes('placeholder') ? (
   <img
     src={profileImage}
@@ -231,13 +239,17 @@ export default function ProfilePage() {
     }}
   />
 ) : null}
+                    */}
 <div 
   className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center"
-  style={{ display: profileImage && !profileImage.includes('placeholder') ? 'none' : 'flex' }}
+  // COMMENTED OUT: Dynamic display control
+  // style={{ display: profileImage && !profileImage.includes('placeholder') ? 'none' : 'flex' }}
 >
   <User className="w-12 h-12 text-white" />
 </div>
                   </div>
+                  {/* COMMENTED OUT: Camera upload button */}
+                  {/*
                   <label className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-600 p-2 rounded-full border-2 border-gray-800 transition-colors duration-200 cursor-pointer">
                     <Camera className="w-4 h-4 text-gray-300" />
                     <input
@@ -248,15 +260,21 @@ export default function ProfilePage() {
                       disabled={isUpdating}
                     />
                   </label>
+                  */}
+                  {/* COMMENTED OUT: Upload loading indicator */}
+                  {/*
                   {isUpdating && (
                     <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
                       <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
                     </div>
                   )}
+                  */}
                 </div>
 
                 {/* Display Name */}
                 <div className="mb-2">
+                  {/* COMMENTED OUT: Editable display name */}
+                  {/*
                   {isEditing ? (
                     <input
                       type="text"
@@ -268,11 +286,16 @@ export default function ProfilePage() {
                   ) : (
                     <h2 className="text-xl font-semibold text-white">{displayName}</h2>
                   )}
+                  */}
+                  {/* Static display name */}
+                  <h2 className="text-xl font-semibold text-white">{displayName}</h2>
                 </div>
 
                 <p className="text-gray-400 text-sm mb-4">{session.user?.email}</p>
 
+                {/* COMMENTED OUT: Edit functionality */}
                 {/* Edit Button */}
+                {/*
                 {isEditing ? (
                   <div className="flex gap-2 justify-center">
                     <button
@@ -299,6 +322,7 @@ export default function ProfilePage() {
                     Edit Profile
                   </button>
                 )}
+                */}
               </div>
             </div>
           </div>
