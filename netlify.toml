@@ -1,4 +1,3 @@
-# netlify.toml
 [build]
   command = "npm run build"
   publish = ".next"
@@ -9,13 +8,9 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Function settings for API routes (FIXED SYNTAX)
+# Function settings for API routes
 [functions]
   node_bundler = "esbuild"
-
-[[functions]]
-  path = "/.netlify/functions/*"
-  included_files = ["node_modules/**"]
   
 # Handle API routes
 [[redirects]]
