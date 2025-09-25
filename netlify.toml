@@ -9,14 +9,15 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-# Function settings for API routes
+# Function settings for API routes (FIXED SYNTAX)
 [functions]
-  # Increase timeout for video uploads and processing
-  timeout = 300
-  # Set memory allocation
-  memory = 1024
+  node_bundler = "esbuild"
 
-# Handle API routes (these redirects ensure API routes work properly)
+[[functions]]
+  path = "/.netlify/functions/*"
+  included_files = ["node_modules/**"]
+  
+# Handle API routes
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/nextjs/:splat"
