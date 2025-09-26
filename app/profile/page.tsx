@@ -47,120 +47,6 @@ export default function ProfilePage() {
     return null;
   }
 
-  // COMMENTED OUT: Image upload functionality
-  /*
-  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  // Check file size (max 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    setUpdateError("Image size must be less than 5MB");
-    return;
-  }
-
-  // Check file type
-  if (!file.type.startsWith('image/')) {
-    setUpdateError("Please upload an image file");
-    return;
-  }
-
-  try {
-    setIsUpdating(true);
-    setUpdateError("");
-
-    // Convert file to base64 or use a simple file upload approach
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      try {
-        // For now, we'll use a simple approach - you can integrate with your preferred image service later
-        const imageUrl = reader.result as string;
-        
-        // Update profile with new image
-        const updateResponse = await fetch('/api/profile/update', {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ profileImage: imageUrl }),
-        });
-
-        if (!updateResponse.ok) {
-          throw new Error('Failed to update profile');
-        }
-
-        const data = await updateResponse.json();
-        setProfileImage(imageUrl);
-        
-        // Update session
-        await update({
-          ...session,
-          user: { ...session.user, profileImage: imageUrl } as any
-        });
-
-      } catch (error) {
-        setUpdateError("Failed to upload image. Please try again.");
-        console.error('Image upload error:', error);
-      } finally {
-        setIsUpdating(false);
-      }
-    };
-    
-    reader.readAsDataURL(file);
-
-  } catch (error) {
-    setUpdateError("Failed to process image. Please try again.");
-    console.error('Image processing error:', error);
-    setIsUpdating(false);
-  }
-};
-  */
-
-  // COMMENTED OUT: Save profile functionality
-  /*
-  const handleSave = async () => {
-  console.log('=== HANDLE SAVE DEBUG START ===');
-  console.log('Display name to save:', displayName);
-  
-  setIsUpdating(true);
-  setUpdateError("");
-
-  try {
-    const response = await fetch('/api/profile/update', {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ displayName }),
-    });
-
-    console.log('Response status:', response.status);
-    const data = await response.json();
-    console.log('Response data:', data);
-
-    if (!response.ok) {
-      throw new Error('Failed to update profile');
-    }
-
-    // Update session
-    await update({
-      ...session,
-      user: { ...session.user, displayName } as any
-    });
-
-    console.log('Session updated, setting editing to false');
-    setIsEditing(false);
-    console.log('=== HANDLE SAVE DEBUG END ===');
-  } catch (error) {
-    console.error('Save error:', error);
-    setUpdateError("Failed to update display name. Please try again.");
-    console.log('=== HANDLE SAVE DEBUG END (ERROR) ===');
-  } finally {
-    setIsUpdating(false);
-  }
-};
-  */
-
   const handleCancel = () => {
     const user = session.user as any;
     setDisplayName(user.displayName || user.email?.split("@")[0] || "");
@@ -226,103 +112,26 @@ export default function ProfilePage() {
                 {/* Profile Picture */}
                 <div className="relative mx-auto mb-4">
                   <div className="w-24 h-24 rounded-full overflow-hidden mx-auto">
-                    {/* COMMENTED OUT: Dynamic profile image display */}
-                    {/*
-                    {profileImage && !profileImage.includes('placeholder') ? (
-  <img
-    src={profileImage}
-    alt="Profile"
-    className="w-full h-full object-cover"
-    onError={(e) => {
-      (e.target as HTMLImageElement).style.display = 'none';
-      (e.target as HTMLImageElement).nextElementSibling?.setAttribute('style', 'display: flex');
-    }}
-  />
-) : null}
-                    */}
-<div 
-  className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center"
-  // COMMENTED OUT: Dynamic display control
-  // style={{ display: profileImage && !profileImage.includes('placeholder') ? 'none' : 'flex' }}
+                    <div 
+                      className="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center"
+                      // COMMENTED OUT: Dynamic display control
+                      // style={{ display: profileImage && !profileImage.includes('placeholder') ? 'none' : 'flex' }}
 >
   <User className="w-12 h-12 text-white" />
 </div>
                   </div>
-                  {/* COMMENTED OUT: Camera upload button */}
-                  {/*
-                  <label className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-600 p-2 rounded-full border-2 border-gray-800 transition-colors duration-200 cursor-pointer">
-                    <Camera className="w-4 h-4 text-gray-300" />
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                      disabled={isUpdating}
-                    />
-                  </label>
-                  */}
-                  {/* COMMENTED OUT: Upload loading indicator */}
-                  {/*
-                  {isUpdating && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full flex items-center justify-center">
-                      <div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                    </div>
-                  )}
-                  */}
+                  
                 </div>
 
                 {/* Display Name */}
                 <div className="mb-2">
-                  {/* COMMENTED OUT: Editable display name */}
-                  {/*
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={displayName}
-                      onChange={(e) => setDisplayName(e.target.value)}
-                      className="bg-gray-700 text-white text-xl font-semibold text-center rounded-lg px-3 py-2 border border-gray-600 focus:border-blue-500 focus:outline-none"
-                      autoFocus
-                    />
-                  ) : (
-                    <h2 className="text-xl font-semibold text-white">{displayName}</h2>
-                  )}
-                  */}
-                  {/* Static display name */}
+                  
                   <h2 className="text-xl font-semibold text-white">{displayName}</h2>
                 </div>
 
                 <p className="text-gray-400 text-sm mb-4">{session.user?.email}</p>
 
-                {/* COMMENTED OUT: Edit functionality */}
-                {/* Edit Button */}
-                {/*
-                {isEditing ? (
-                  <div className="flex gap-2 justify-center">
-                    <button
-                      onClick={handleSave}
-                      disabled={isUpdating}
-                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-600 text-white text-sm rounded-lg transition-colors duration-200"
-                    >
-                      {isUpdating ? 'Saving...' : 'Save'}
-                    </button>
-                    <button
-                      onClick={handleCancel}
-                      disabled={isUpdating}
-                      className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-lg transition-colors duration-200"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setIsEditing(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white text-sm rounded-lg transition-colors duration-200 mx-auto"
-                  >
-                    <Edit3 className="w-4 h-4" />
-                    Edit Profile
-                  </button>
-                )}
-                */}
+                
               </div>
             </div>
           </div>

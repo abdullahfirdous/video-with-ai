@@ -47,12 +47,11 @@ export const authOptions: NextAuthOptions = {
           console.log("Authentication successful for user:", user.email);
           
           return { 
-            id: user._id.toString(),
-            email: user.email,
-            displayName: user.displayName || user.email,
-            // REMOVED: profileImage to prevent large cookies
-            // profileImage: user.profileImage || null
-          }
+  id: user._id.toString(),
+  email: user.email,
+  displayName: user.displayName || user.email,
+  profileImage: user.profileImage || null
+}
 
         } catch (error) {
           console.error("Auth error:", error);
@@ -64,30 +63,27 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async jwt({token, user}){
-      if(user){
-        // Only store essential data - NO IMAGES
-        token.id = user.id;
-        token.displayName = (user as any).displayName || "";
-        // REMOVED: token.profileImage to prevent large cookies
-        // token.profileImage = (user as any).profileImage || "";
-      }
-      // Explicitly return only what we need - keep it minimal
-      return {
-        ...token,
-        id: token.id,
-        email: token.email,
-        displayName: token.displayName,
-        // REMOVED: profileImage to prevent large cookies
-        // profileImage: token.profileImage
-      };
-    },
+  if(user){
+    // Only store essential data
+    token.id = user.id;
+    token.displayName = (user as any).displayName || "";
+    token.profileImage = (user as any).profileImage || "";
+  }
+  // Explicitly return only what we need
+  return {
+    ...token,
+    id: token.id,
+    email: token.email,
+    displayName: token.displayName,
+    profileImage: token.profileImage
+  };
+},
 
     async session({session, token }){
       if (session.user){
         session.user.id = token.id as string;
         (session.user as any).displayName = token.displayName as string;
-        // REMOVED: profileImage to prevent large cookies
-        // (session.user as any).profileImage = token.profileImage as string;
+        (session.user as any).profileImage = token.profileImage as string;
       }
       return session;
     },
@@ -127,18 +123,19 @@ export const authOptions: NextAuthOptions = {
   },
 
   session: {
-    strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
-  },
+  strategy: "jwt",
+  maxAge: 30 * 24 * 60 * 60, // 30 days
+  // Add this line
+  updateAge: 24 * 60 * 60, // 24 hours
+},
 
-  jwt: {
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-  },
+jwt: {
+  maxAge: 30 * 24 * 60 * 60, // 30 days
+},
 
   debug: process.env.NODE_ENV === "development",
   
   secret: process.env.NEXTAUTH_SECRET,
   
-  useSecureCookies: process.env.NODE_ENV === "production",
+ useSecureCookies: process.env.NODE_ENV === "production",
 };
